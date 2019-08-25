@@ -1,7 +1,8 @@
 let domRows = Array.from(document.getElementsByClassName("row"))
 
-
 let getContentForId = itemId => itemId
+
+const tileCount = 5
 
 let prepareItem = col => {
     let span = col.children[0]
@@ -59,6 +60,23 @@ let createTile = (data)=>{
 }
 
 
+let verifyVictory = () => {
+    for(domRow of domRows){
+        let tiles = Array.from(domRow.children)
+        if((tiles.length - 2) == tileCount){
+            for(let i=1; i < tiles.length-2; i++){
+                if(tiles[i] > tiles[i+1]) return;
+            }
+            alert("Victory")
+        }
+    }
+}
+
+let firstRowStart = domRows[0].children[0]
+for(let i= 1; i <= tileCount; i++){
+    domRows[0].insertBefore(createTile({row: 1,id: i}), firstRowStart.nextSibling)
+}
+
 Array.from(document.getElementsByClassName("col")).forEach(prepareItem);
 
 
@@ -86,10 +104,11 @@ Array.from(document.getElementsByClassName("col-start-hidden")).forEach( col => 
         this.classList.remove('col-start');
         this.classList.add('col-start-hidden');
         let oldTileInfo = JSON.parse(e.dataTransfer.getData('text/plain'))
+
         document.getElementById(oldTileInfo.id).parentElement.remove();
         let newTile = createTile(oldTileInfo)
         this.parentElement.insertBefore(newTile, this.nextSibling)
-        domRows[oldTileInfo.row]
+        verifyVictory()
     }, false)
 });
 
@@ -120,6 +139,7 @@ Array.from(document.getElementsByClassName("col-end-hidden")).forEach( col => {
       document.getElementById(oldTileInfo.id).parentElement.remove();
       let newTile = createTile(oldTileInfo)
       this.parentElement.insertBefore(newTile, this)
+      verifyVictory()
     }, false)
     
 });

@@ -47,6 +47,7 @@
   padding: 20px;
   width: 150px;
   height: 150px;
+  background: #565656;
 }
 
 .col-end-hidden{
@@ -54,6 +55,7 @@
   padding: 20px;
   width: 150px;
   height: 150px;
+  background: #565656;
 }
 
 .col-start{
