@@ -24,6 +24,12 @@ let items = [
     {"id":2, "innerHTML": "2"},
     {"id":3, "innerHTML": "3"},
     {"id":4, "innerHTML": "4"},
+    {"id":5, "innerHTML": "5"},
+    {"id":6, "innerHTML": "6"},
+    {"id":7, "innerHTML": "7"},
+    {"id":8, "innerHTML": "8"},
+    {"id":9, "innerHTML": "9"},
+    {"id":10, "innerHTML": "10"},
 ]
 
 randomizedItems = shuffle(items)
