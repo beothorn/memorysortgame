@@ -24,10 +24,6 @@ let items = [
     {"id":2, "innerHTML": "2"},
     {"id":3, "innerHTML": "3"},
     {"id":4, "innerHTML": "4"},
-    {"id":5, "innerHTML": "5"},
-    {"id":6, "innerHTML": "6"},
-    {"id":7, "innerHTML": "7"},
-    {"id":8, "innerHTML": "8"},
 ]
 
 randomizedItems = shuffle(items)
@@ -41,6 +37,8 @@ let prepareItem = col => {
     span.innerHTML = getContentForId(span.id)
 
     col.addEventListener('dragstart', function(e) {
+      if(this.classList.contains("col")) moves++
+      
       this.classList.remove('col');
       this.classList.add('col-drag');
       let item = this.children[0]
@@ -93,7 +91,6 @@ let createTile = (data)=>{
 
 
 let verifyVictory = () => {
-    moves++
     for(domRow of domRows){
         let tiles = Array.from(domRow.children)
         if((tiles.length - 2) == randomizedItems.length){
