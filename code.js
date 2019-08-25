@@ -1,6 +1,9 @@
-let dragSrcEl;
+let domRows = Array.from(document.getElementsByClassName("row"))
 
-Array.from(document.getElementsByClassName("col")).forEach( col => {
+let prepareItem = col => {
+    let span = col.children[0]
+    span.innerHTML = span.dataset["ord"]
+
     col.addEventListener('dragstart', function(e) {
       this.classList.remove('col');
       this.classList.add('col-drag');
@@ -8,10 +11,15 @@ Array.from(document.getElementsByClassName("col")).forEach( col => {
       item.classList.remove('item-hidden');
       item.classList.add('item');
 
-      dragSrcEl = this;
-
       e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/html', this.innerHTML);
+
+        
+      let dataToTransfer = {
+          row: this.dataset["row"],
+          ord: item.dataset["ord"]
+      }
+
+      e.dataTransfer.setData("text/plain", JSON.stringify(dataToTransfer));
 
     }, false)
 
@@ -26,21 +34,29 @@ Array.from(document.getElementsByClassName("col")).forEach( col => {
     col.addEventListener('dragover', function(e) {
       if (e.preventDefault) e.preventDefault() // Necessary. Allows us to drop.
 
-      e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
-
-      //var dragIcon = document.createElement('img');
-      //dragIcon.src = 'logo.png';
-      //dragIcon.width = 100;
-      //let x = e.dataTransfer
-      //x.setDragImage(dragIcon, -10, -10);
-
       return false;
     }  , false)
+}
 
-    col.addEventListener('drop', function(e) {
-        console.log("drop2")
-    }, false)
-});
+let createTile = (data)=>{
+    let row = data.row
+    let ord = data.ord
+
+    let div = document.createElement("div")
+    div.classList.add("col")
+    div.dataset["row"] = row
+    div.draggable = true
+    let span = document.createElement("span")
+    span.classList.add("item-hidden")
+    span.dataset["ord"] = ord
+
+    div.appendChild(span)
+    prepareItem(div)
+    return div
+}
+
+
+Array.from(document.getElementsByClassName("col")).forEach(prepareItem);
 
 
 
@@ -66,7 +82,9 @@ Array.from(document.getElementsByClassName("col-start-hidden")).forEach( col => 
     col.addEventListener('drop', function(e) {
         this.classList.remove('col-start');
         this.classList.add('col-start-hidden');
-        console.log("drop3")
+        let newTile = createTile(JSON.parse(e.dataTransfer.getData('text/plain')))
+        this.parentElement.insertBefore(newTile, this.nextSibling)
+        this.parentElement.removeChild(this);
     }, false)
 });
 
@@ -93,7 +111,8 @@ Array.from(document.getElementsByClassName("col-end-hidden")).forEach( col => {
     col.addEventListener('drop', function(e) {
       this.classList.remove('col-end');
       this.classList.add('col-end-hidden');
-      console.log("drop4")
+      let newTile = createTile(JSON.parse(e.dataTransfer.getData('text/plain')))
+      this.parentElement.insertBefore(newTile, this)
     }, false)
     
 });
