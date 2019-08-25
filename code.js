@@ -1,3 +1,5 @@
+let moves = 0
+
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -91,6 +93,7 @@ let createTile = (data)=>{
 
 
 let verifyVictory = () => {
+    moves++
     for(domRow of domRows){
         let tiles = Array.from(domRow.children)
         if((tiles.length - 2) == randomizedItems.length){
@@ -99,7 +102,7 @@ let verifyVictory = () => {
                 let next = parseInt(tiles[i+1].children[0].id)
                 if(previous > next) return;
             }
-            alert("Victory")
+            alert("Victory in "+moves+" moves")
         }
     }
 }
