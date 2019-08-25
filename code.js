@@ -1,3 +1,4 @@
+let dragSrcEl;
 
 Array.from(document.getElementsByClassName("col")).forEach( col => {
     col.addEventListener('dragstart', function(e) {
@@ -6,6 +7,12 @@ Array.from(document.getElementsByClassName("col")).forEach( col => {
       let item = this.children[0]
       item.classList.remove('item-hidden');
       item.classList.add('item');
+
+      dragSrcEl = this;
+
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', this.innerHTML);
+
     }, false)
 
     col.addEventListener('dragend', function(e) {
@@ -17,9 +24,7 @@ Array.from(document.getElementsByClassName("col")).forEach( col => {
     }, false)
 
     col.addEventListener('dragover', function(e) {
-      if (e.preventDefault) {
-        e.preventDefault(); // Necessary. Allows us to drop.
-      }
+      if (e.preventDefault) e.preventDefault() // Necessary. Allows us to drop.
 
       e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
 
@@ -31,27 +36,46 @@ Array.from(document.getElementsByClassName("col")).forEach( col => {
 
       return false;
     }  , false)
+
+    col.addEventListener('drop', function(e) {
+        console.log("drop2")
+    }, false)
 });
 
 
 
 Array.from(document.getElementsByClassName("col-start-hidden")).forEach( col => {
-    
+
     col.addEventListener('dragenter', function(e) {
+      if (e.preventDefault) e.preventDefault() // Necessary. Allows us to drop.
       this.classList.remove('col-start-hidden');
       this.classList.add('col-start');
     }, false)
 
     col.addEventListener('dragleave', function(e) {
+        if (e.preventDefault) e.preventDefault() // Necessary. Allows us to drop.
       this.classList.remove('col-start');
       this.classList.add('col-start-hidden');
     }, false)
 
+    col.addEventListener('dragover', function(e) {
+      if (e.preventDefault) e.preventDefault()
+      return false;
+    }  , false)
+
+    col.addEventListener('drop', function(e) {
+        this.classList.remove('col-start');
+        this.classList.add('col-start-hidden');
+        console.log("drop3")
+    }, false)
 });
 
 Array.from(document.getElementsByClassName("col-end-hidden")).forEach( col => {
     
     col.addEventListener('dragenter', function(e) {
+      if (e.preventDefault) {
+        e.preventDefault(); // Necessary. Allows us to drop.
+      }
       this.classList.remove('col-end-hidden');
       this.classList.add('col-end');
     }, false)
@@ -59,6 +83,17 @@ Array.from(document.getElementsByClassName("col-end-hidden")).forEach( col => {
     col.addEventListener('dragleave', function(e) {
       this.classList.remove('col-end');
       this.classList.add('col-end-hidden');
+    }, false)
+
+    col.addEventListener('dragover', function(e) {
+      if (e.preventDefault) e.preventDefault()
+      return false;
+    }  , false)
+
+    col.addEventListener('drop', function(e) {
+      this.classList.remove('col-end');
+      this.classList.add('col-end-hidden');
+      console.log("drop4")
     }, false)
     
 });

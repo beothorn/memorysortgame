@@ -80,6 +80,9 @@
 
 .item{
   display: block;
+  background: #b5b5b5;
+  font-size: 90px;
+  text-align: center;
 }
 
 .item-hidden{
