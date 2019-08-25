@@ -1,8 +1,11 @@
 let domRows = Array.from(document.getElementsByClassName("row"))
 
+
+let getContentForId = itemId => itemId
+
 let prepareItem = col => {
     let span = col.children[0]
-    span.innerHTML = span.dataset["ord"]
+    span.innerHTML = getContentForId(span.id)
 
     col.addEventListener('dragstart', function(e) {
       this.classList.remove('col');
@@ -16,7 +19,7 @@ let prepareItem = col => {
         
       let dataToTransfer = {
           row: this.dataset["row"],
-          ord: item.dataset["ord"]
+          id: item.id
       }
 
       e.dataTransfer.setData("text/plain", JSON.stringify(dataToTransfer));
@@ -40,7 +43,7 @@ let prepareItem = col => {
 
 let createTile = (data)=>{
     let row = data.row
-    let ord = data.ord
+    let id = data.id
 
     let div = document.createElement("div")
     div.classList.add("col")
@@ -48,7 +51,7 @@ let createTile = (data)=>{
     div.draggable = true
     let span = document.createElement("span")
     span.classList.add("item-hidden")
-    span.dataset["ord"] = ord
+    span.id = id
 
     div.appendChild(span)
     prepareItem(div)
@@ -82,9 +85,11 @@ Array.from(document.getElementsByClassName("col-start-hidden")).forEach( col => 
     col.addEventListener('drop', function(e) {
         this.classList.remove('col-start');
         this.classList.add('col-start-hidden');
-        let newTile = createTile(JSON.parse(e.dataTransfer.getData('text/plain')))
+        let oldTileInfo = JSON.parse(e.dataTransfer.getData('text/plain'))
+        document.getElementById(oldTileInfo.id).parentElement.remove();
+        let newTile = createTile(oldTileInfo)
         this.parentElement.insertBefore(newTile, this.nextSibling)
-        this.parentElement.removeChild(this);
+        domRows[oldTileInfo.row]
     }, false)
 });
 
@@ -111,7 +116,9 @@ Array.from(document.getElementsByClassName("col-end-hidden")).forEach( col => {
     col.addEventListener('drop', function(e) {
       this.classList.remove('col-end');
       this.classList.add('col-end-hidden');
-      let newTile = createTile(JSON.parse(e.dataTransfer.getData('text/plain')))
+      let oldTileInfo = JSON.parse(e.dataTransfer.getData('text/plain'))
+      document.getElementById(oldTileInfo.id).parentElement.remove();
+      let newTile = createTile(oldTileInfo)
       this.parentElement.insertBefore(newTile, this)
     }, false)
     
