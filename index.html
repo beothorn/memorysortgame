@@ -6,18 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
-    <script src="code.js"></script>
     <title>Document</title>
 </head>
 
 <body>
 
-    <div>
-        <div><span>1</span></div>
-        <div><span>2</span></div>
-        <div><span>3</span></div>
-        <div><span>4</span></div>
+    <div class="row">
+        <div class="col-start-hidden"><span class="item-start-hidden"></span></div>
+        <div class="col"><span class="item" draggable="true"></span></div>
+        <div class="col"><span class="item" draggable="true"></span></div>
+        <div class="col"><span class="item" draggable="true"></span></div>
+        <div class="col"><span class="item" draggable="true"></span></div>
+        <div class="col-end-hidden"><span class="item-end-hidden"></span></div>
     </div>
+
+    <div class="row">
+        <div class="col-start-hidden"><span class="item-start-hidden"></span></div>
+        <div class="col"><span class="item" draggable="true"></span></div>
+        <div class="col"><span class="item" draggable="true"></span></div>
+        <div class="col-end-hidden"><span class="item-end-hidden"></span></div>
+    </div>
+
+    <div class="row">
+        <div class="col-start"><span class="item-start-hidden"></span></div>
+        <div class="col"><span class="item"></span></div>
+        <div class="col"><span class="item"></span></div>
+        <div class="col"><span class="item"></span></div>
+        <div class="col-end"><span class="item-end"></span></div>
+    </div>
+
+    <div class="row">
+        <div class="col-start"><span class="item-start"></span></div>
+        <div class="col"><span class="item"></span></div>
+        <div class="col"><span class="item"></span></div>
+        <div class="col"><span class="item"></span></div>
+        <div class="col-end"><span class="item-end"></span></div>
+    </div>
+
+<script src="code.js"></script>
 
 </body>
 
