@@ -1,8 +1,38 @@
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+let items = [
+    {"id":1, "innerHTML": "1"},
+    {"id":2, "innerHTML": "2"},
+    {"id":3, "innerHTML": "3"},
+    {"id":4, "innerHTML": "4"},
+    {"id":5, "innerHTML": "5"},
+    {"id":6, "innerHTML": "6"},
+    {"id":7, "innerHTML": "7"},
+    {"id":8, "innerHTML": "8"},
+]
+
+randomizedItems = shuffle(items)
+
 let domRows = Array.from(document.getElementsByClassName("row"))
 
 let getContentForId = itemId => itemId
-
-const tileCount = 5
 
 let prepareItem = col => {
     let span = col.children[0]
@@ -63,9 +93,11 @@ let createTile = (data)=>{
 let verifyVictory = () => {
     for(domRow of domRows){
         let tiles = Array.from(domRow.children)
-        if((tiles.length - 2) == tileCount){
+        if((tiles.length - 2) == randomizedItems.length){
             for(let i=1; i < tiles.length-2; i++){
-                if(tiles[i] > tiles[i+1]) return;
+                let previous = parseInt(tiles[i].children[0].id)
+                let next = parseInt(tiles[i+1].children[0].id)
+                if(previous > next) return;
             }
             alert("Victory")
         }
@@ -73,12 +105,11 @@ let verifyVictory = () => {
 }
 
 let firstRowStart = domRows[0].children[0]
-for(let i= 1; i <= tileCount; i++){
-    domRows[0].insertBefore(createTile({row: 1,id: i}), firstRowStart.nextSibling)
+for(randomizedItem of randomizedItems){
+    domRows[0].insertBefore(createTile({row: 1,id: randomizedItem.id}), firstRowStart.nextSibling)
 }
 
 Array.from(document.getElementsByClassName("col")).forEach(prepareItem);
-
 
 
 Array.from(document.getElementsByClassName("col-start-hidden")).forEach( col => {
